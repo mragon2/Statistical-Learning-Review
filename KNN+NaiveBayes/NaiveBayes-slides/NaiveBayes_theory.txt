@@ -1,0 +1,99 @@
+
+Naive Bayes Theorem
+
+Let's suppose to have two machines producing spanners.
+The spanners are marked as m1 if they are built by machine 1 and m2 if they are built by machine m2.
+
+Problem : what is the probability that machine 2 produces a defective spanner ?
+
+To face this probelm we use the Bayes theorem.
+
+What we know :
+
+machine 1 produces 30 wrenches/hr
+machine 2 produces 20 wrenches/hr
+
+>>> Total number of machine per hour : 30 (m1) + 20 (m2)=50
+>>> p(m1): 30/50=0.6
+>>> p(m2): 20/50=0.4
+
+
+1% of them are defective, andamong this 1%, 50% are from m1 and 50% are from m2
+If we take a defective component,the likelihood that it comes from m1 is 50%
+
+>>> p(defect)=0.01
+>>> p(m1|defect)=0.5
+>>> p(m2|defect)=0.5
+
+Question : what is the probability that a part produced by machine 2 is defective ?
+
+p(defect|m2)= p(m2|defect)*p(defect)/p(m2)=0.5*0.01/0.4=0.0125=1.25%
+
+Going throuh intuition : 
+
+1000 wrenches 
+1% is defective >>> 10 defective wrenches
+50% of the defective wrenches from m2 >>>> 5 defective wrenches from m2
+
+400 wrenches amomng 1000 are from m2
+
+
+p(defect|m2)=5/400=0.0125=1.25%
+
+>>> divide the number of defective wrenches from m2 by the total number of wrenches from m2
+
+Why it's not the best idea to follow the intuitive direction ?
+
+1) it can be time consuming to count the number of  wrenches from m2
+2) data not accessible
+
+Nayev Bayes Classifier
+
+Let's suppose to have features X and we want to classify if a person walks or drives
+
+>>> features X : Age, Salary
+>>> labels: walks (red points), drives (green points)
+>>> calculate the posteriro probability P(walks|X) and P(drives|X) with the Bayes Theorem
+    
+    P(walks|X)=P(X|walks)*P(walks)/P(X)
+    
+    step 1 : prior probability P(walks) >>> ratio between the number of red dots and total number of dots
+    
+    step 2 : marginal likelihood P(X)  >>> draw a circle of a given radius (give in input) around the new observation that we want to predict 
+                                            all the data points inside the radius are considered to be similar to the new point in the center
+                                            the radius of the circle is an important parameter of the model
+                                            
+                                            P(X)= ratio between the number of observations inside the circle and the total number of observations
+                                            P(X) is the probability that taking a random point in the dataset, this point exhibits similarity (it falls in the circle)
+                                            with the observation we want to classify (center of the circle)
+    
+    
+    step 3 : likelihood P(X|walks) >>>     probability that a walkers has features similar to the new data point
+                                           ratio between the number of red dots in the circle (walkers similar to the new point)
+                                           and the total number of red dots (total number of walkers)
+                                           
+
+>>> similarly we calculate the posterior probability P(drives|X)
+
+>>> if P(walks|X) > P(drives|X) the new data point is classifies as walks (or viceversa)
+                                      
+Why it is called Naive Bayes ?
+
+Naive >>> the algorithm is based on assumptions which are not always correct >>> it is naive to assume them correct.
+          For example, in the Bayes theorem the variables must be indipendent, but in practical applications there can be
+          correlations among the features. In our example the features are the Age and the Salary. 
+          These two features are not indipentent. However we can apply the NBC anyway. 
+          
+          
+Note :- we compare P(walks|X) with P(drives|X) that means we compare
+        P(X|walks)*P(walks)/P(X) with  P(X|drives)*P(drives)/P(X)
+       
+        Since P(X) is present at the denominator of both the posteriors,
+        we can directly compare P(X|walks)*P(walks) with P(X|drives)*P(drives)
+        
+      - in binary classifications the posteriors for the two classes add to 1
+        so we need to calculate only one. With many classes we need to compute all the posteriors. 
+         
+
+
+
